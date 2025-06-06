@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="container">
+    <div class="row">
+    <div class="col-md-4 offset-md-4 ">
+<h1 class="text-secondary">{{patient.name}}</h1>
+
+<div class="mt-5 mb-5">
+<form method="POST" action="{% url 'patient_detail' patient.id %}">
+    {% csrf_token %}
+     {% if form.errors %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert"> 
+                {% for field in form %}
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    {{ form.as_p }}
+    <button class="btn btn-success">Update</button>
+</form>
+<form action="{% url 'delete_patient' patient.id %}" method="post">
+{% csrf_token %}
+<button class="btn btn-danger">
+    Delete
+</button>
+</form>
+<br/>
+<a class="btn btn-primary" href="{% url 'diagnosis' patient.id %}">
+    Diagnoses
+</a>
+<a class="btn btn-secondary" href="{% url 'patients' %}">
+   Patients
+</a>
+</div>
+</div>
+</div>
+</main>
+{% endblock %}

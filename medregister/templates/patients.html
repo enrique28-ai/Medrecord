@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container">
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+<h1 class="text-center display-3 py-5">Patients</h1>
+<a class="btn btn-primary mb-3" href="{% url 'create_patient' %}">
+ Add Patient
+</a>
+<form method="get" action="{% url 'patients' %}" class="input-group mb-4">
+  <input type="text"
+         name="q"
+         value="{{ query }}"          
+         class="form-control"
+         placeholder="Search patient…">
+  <button class="btn btn-outline-secondary" type="submit">Search</button>
+</form>
+<ul class="list-group">
+{% for patient in patients %}
+    <a class="list-group-item" href="{% url 'patient_detail' patient.id %}">
+        <header class="d-flex justify-content-between">
+            <h1 class="fw-bold">{{patient.name}}</h1>
+        <h5>Age: {{patient.age}}</h5>
+        </header>
+    </a>
+{% endfor %}
+</ul>
+</div>
+</div>
+</main>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load tz %}
+{% block content %}
+<main class="container">
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+<h1 class="text-center display-3 py-5">{{patient.name}} - Diagnosis</h1>
+<a class="btn btn-primary mb-3" href="{% url 'create_diagnosis' patient.id %}">
+ Create Diagnosis
+</a>
+
+<a class="btn btn-secondary mb-3" href="{% url 'patient_detail' patient.id %}">
+ Back to Patient
+</a>
+<form method="get"
+            action="{% url 'diagnosis' patient.id %}"
+            class="input-group mb-4">
+        <input type="text"
+               name="q"
+               value="{{ query }}"
+               class="form-control"
+               placeholder="Search diagnosis…">
+        <button class="btn btn-outline-secondary"
+                type="submit">Search</button>
+      </form>
+
+<ul class="list-group">
+{% for rec in health_records %}
+    <a class="list-group-item" href="{% url 'diagnosis_detail' patient.id rec.id %}">
+        <header class="d-flex align-items-center mb-1">
+            <h3 class="fw-bold m-0">{{rec.diagnostic}}</h3>
+            <span class="text-secondary ms-auto">
+                {{ rec.created_at|localtime|date:"d/m/Y H:i" }}
+              </span>
+            <br/><br/>
+        </header>
+        <p>{{rec.description}}</p>
+    </a>
+{% endfor %}
+</ul>
+</div>
+</div>
+</main>
+
+    
+{% endblock %}
