@@ -1,22 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="col-md-6 offset-md-3">
+<div class="page-shell">
+  <div class="page-title">
     <h1>Login</h1>
-    <form method="post" action="{% url 'signin' %}">
-        {% csrf_token %}
-        {% if form.errors %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert"> 
-                {% for field in form %}
-                    {% if field.errors %}
-                        {{ field.errors }}
-                    {% endif %}
-                {% endfor %}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endif %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-</div>
+    <p>Sign in to access your patient records.</p>
+  </div>
 
+  <div class="legacy-panel form-section">
+    <form method="post" action="{% url 'signin' %}">
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {% for field in form %}
+            {% if field.errors %}{{ field.errors }}{% endif %}
+          {% endfor %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %}
+
+      {{ form.as_p }}
+
+      <div class="action-row">
+        <button type="submit" class="btn btn-primary">Login</button>
+        <a class="btn btn-secondary" href="{% url 'signup' %}">Register</a>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}
