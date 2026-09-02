@@ -1,46 +1,36 @@
 {% extends 'base.html' %}
 {% load tz %}
 {% block content %}
-<main class="container">
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-<h1 class="text-center display-3 py-5">{{patient.name}} - Diagnosis</h1>
-<a class="btn btn-primary mb-3" href="{% url 'create_diagnosis' patient.id %}">
- Create Diagnosis
-</a>
+<div class="page-shell">
+  <div class="page-title">
+    <h1>{{ patient.name }} - Diagnoses</h1>
+    <p>Diagnosis records connected to this patient.</p>
+  </div>
 
-<a class="btn btn-secondary mb-3" href="{% url 'patient_detail' patient.id %}">
- Back to Patient
-</a>
-<form method="get"
-            action="{% url 'diagnosis' patient.id %}"
-            class="input-group mb-4">
-        <input type="text"
-               name="q"
-               value="{{ query }}"
-               class="form-control"
-               placeholder="Search diagnosis…">
-        <button class="btn btn-outline-secondary"
-                type="submit">Search</button>
-      </form>
+  <div class="legacy-panel">
+    <div class="action-row mb-3">
+      <a class="btn btn-primary" href="{% url 'create_diagnosis' patient.id %}">Create Diagnosis</a>
+      <a class="btn btn-secondary" href="{% url 'patient_detail' patient.id %}">Back to Patient</a>
+    </div>
 
-<ul class="list-group">
-{% for rec in health_records %}
-    <a class="list-group-item" href="{% url 'diagnosis_detail' patient.id rec.id %}">
-        <header class="d-flex align-items-center mb-1">
-            <h3 class="fw-bold m-0">{{rec.diagnostic}}</h3>
-            <span class="text-secondary ms-auto">
-                {{ rec.created_at|localtime|date:"d/m/Y H:i" }}
-              </span>
-            <br/><br/>
-        </header>
-        <p>{{rec.description}}</p>
-    </a>
-{% endfor %}
-</ul>
+    <form method="get" action="{% url 'diagnosis' patient.id %}" class="input-group mb-4">
+      <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search diagnosis...">
+      <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </form>
+
+    <div class="list-group legacy-list">
+      {% for rec in health_records %}
+        <a class="list-group-item list-group-item-action" href="{% url 'diagnosis_detail' patient.id rec.id %}">
+          <div class="record-row">
+            <h3 class="h5">{{ rec.diagnostic }}</h3>
+            <span class="record-meta">{{ rec.created_at|localtime|date:"d/m/Y H:i" }}</span>
+          </div>
+          <p class="mb-0 mt-2 text-muted">{{ rec.description }}</p>
+        </a>
+      {% empty %}
+        <div class="text-muted">No diagnosis records found.</div>
+      {% endfor %}
+    </div>
+  </div>
 </div>
-</div>
-</main>
-
-    
 {% endblock %}
