@@ -1,50 +1,41 @@
 {% extends 'base.html' %}
-{% block title %}{{ patient.name }} · MedRecord{% endblock %}
 {% block content %}
-<section>
-  <header class="page-header">
-    <div>
-      <p class="page-eyebrow">Patient record</p>
-      <h1 class="page-title">{{ patient.name }}</h1>
-      <p class="page-subtitle">Update the patient information or continue to the diagnosis records connected to this patient.</p>
-    </div>
-    <div class="page-header__actions">
-      <a class="btn-medrecord" href="{% url 'diagnosis' patient.id %}">View diagnoses</a>
-      <a class="btn-outline-medrecord" href="{% url 'patients' %}">Back to patients</a>
-    </div>
-  </header>
+<main class="container">
+    <div class="row">
+    <div class="col-md-4 offset-md-4 ">
+<h1 class="text-secondary">{{patient.name}}</h1>
 
-  <div class="detail-grid">
-    <div class="panel-card">
-      <h2>Patient information</h2>
-      <form method="post" action="{% url 'patient_detail' patient.id %}" class="medrecord-form mt-4">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="form-actions">
-          <button type="submit" class="btn-medrecord">Save changes</button>
-        </div>
-      </form>
-    </div>
-
-    <aside>
-      <div class="panel-card">
-        <span class="context-note">Related records</span>
-        <h2>Diagnosis records</h2>
-        <p class="mt-2">Review the diagnosis entries that belong to {{ patient.name }}.</p>
-        <div class="action-stack mt-3">
-          <a class="btn-medrecord" href="{% url 'diagnosis' patient.id %}">Open diagnoses</a>
-          <a class="btn-outline-medrecord" href="{% url 'create_diagnosis' patient.id %}">Add diagnosis</a>
-        </div>
-      </div>
-
-      <div class="danger-panel">
-        <p>Deleting a patient removes this patient record from the application.</p>
-        <form action="{% url 'delete_patient' patient.id %}" method="post">
-          {% csrf_token %}
-          <button type="submit" class="btn-danger-soft w-100">Delete patient</button>
-        </form>
-      </div>
-    </aside>
-  </div>
-</section>
+<div class="mt-5 mb-5">
+<form method="POST" action="{% url 'patient_detail' patient.id %}">
+    {% csrf_token %}
+     {% if form.errors %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert"> 
+                {% for field in form %}
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+    {{ form.as_p }}
+    <button class="btn btn-success">Update</button>
+</form>
+<form action="{% url 'delete_patient' patient.id %}" method="post">
+{% csrf_token %}
+<button class="btn btn-danger">
+    Delete
+</button>
+</form>
+<br/>
+<a class="btn btn-primary" href="{% url 'diagnosis' patient.id %}">
+    Diagnoses
+</a>
+<a class="btn btn-secondary" href="{% url 'patients' %}">
+   Patients
+</a>
+</div>
+</div>
+</div>
+</main>
 {% endblock %}
