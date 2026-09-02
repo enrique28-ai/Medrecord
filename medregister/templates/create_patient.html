@@ -1,23 +1,22 @@
 {% extends 'base.html' %}
+{% block title %}Add patient · MedRecord{% endblock %}
 {% block content %}
-<div class="col-md-6 offset-md-3">
-<h1>Add New Patient</h1>
+<section class="form-shell">
+  <div class="form-card">
+    <header class="form-card__header">
+      <p class="page-eyebrow">Patient record</p>
+      <h1>Add patient</h1>
+      <p>Create a patient record that will provide the context for related diagnosis entries.</p>
+    </header>
 
-<form  method="post" action="{% url 'create_patient' %}">
-    {% csrf_token %}
-     {% if form.errors %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert"> 
-                {% for field in form %}
-                    {% if field.errors %}
-                        {{ field.errors }}
-                    {% endif %}
-                {% endfor %}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endif %}
-    {{form.as_p}}
-<br/>
-    <button type="submit" class="btn btn-primary">Add Patient</button>
-</form>
-</div>
+    <form method="post" action="{% url 'create_patient' %}" class="medrecord-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <div class="form-actions">
+        <button type="submit" class="btn-medrecord">Add patient</button>
+        <a class="btn-outline-medrecord" href="{% url 'patients' %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>
 {% endblock %}
