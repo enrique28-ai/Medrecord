@@ -1,32 +1,41 @@
 {% extends 'base.html' %}
-
+{% block title %}Patients · MedRecord{% endblock %}
 {% block content %}
-<main class="container">
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-<h1 class="text-center display-3 py-5">Patients</h1>
-<a class="btn btn-primary mb-3" href="{% url 'create_patient' %}">
- Add Patient
-</a>
-<form method="get" action="{% url 'patients' %}" class="input-group mb-4">
-  <input type="text"
-         name="q"
-         value="{{ query }}"          
-         class="form-control"
-         placeholder="Search patient…">
-  <button class="btn btn-outline-secondary" type="submit">Search</button>
-</form>
-<ul class="list-group">
-{% for patient in patients %}
-    <a class="list-group-item" href="{% url 'patient_detail' patient.id %}">
-        <header class="d-flex justify-content-between">
-            <h1 class="fw-bold">{{patient.name}}</h1>
-        <h5>Age: {{patient.age}}</h5>
-        </header>
-    </a>
-{% endfor %}
-</ul>
-</div>
-</div>
-</main>
+<section>
+  <header class="page-header">
+    <div>
+      <p class="page-eyebrow">Account records</p>
+      <h1 class="page-title">Patients</h1>
+      <p class="page-subtitle">Browse and manage the patient records associated with your account.</p>
+    </div>
+    <div class="page-header__actions">
+      <a class="btn-medrecord" href="{% url 'create_patient' %}">Add patient</a>
+    </div>
+  </header>
+
+  <form method="get" action="{% url 'patients' %}" class="search-panel" role="search">
+    <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search patients by name" aria-label="Search patients by name">
+    <button class="btn-outline-medrecord" type="submit">Search</button>
+  </form>
+
+  {% if patients %}
+    <div class="record-list">
+      {% for patient in patients %}
+        <a class="record-card" href="{% url 'patient_detail' patient.id %}">
+          <div class="record-card__header">
+            <h2 class="record-card__title">{{ patient.name }}</h2>
+            <span class="record-card__meta">Age {{ patient.age }}</span>
+          </div>
+          <p class="record-card__description">Open this patient record to review or update the patient information and access related diagnosis records.</p>
+          <div class="record-card__footer">View patient →</div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <h2>No patients found</h2>
+      <p>{% if query %}Try a different search term or add a new patient record.{% else %}Add your first patient to begin organizing related records.{% endif %}</p>
+    </div>
+  {% endif %}
+</section>
 {% endblock %}
