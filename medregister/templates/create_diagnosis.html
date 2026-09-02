@@ -1,23 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="col-md-6 offset-md-3">
-<h1>Add New Diagnosis - {{patient.name}}</h1>
+<div class="page-shell">
+  <div class="page-title">
+    <h1>Add New Diagnosis</h1>
+    <p>Patient: {{ patient.name }}</p>
+  </div>
 
-<form  method="post" action="{% url 'create_diagnosis' patient.id %}">
-    {% csrf_token %}
-     {% if form.errors %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert"> 
-                {% for field in form %}
-                    {% if field.errors %}
-                        {{ field.errors }}
-                    {% endif %}
-                {% endfor %}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endif %}
-    {{form.as_p}}
-<br/>
-    <button type="submit" class="btn btn-primary">Add Diagnosis</button>
-</form>
+  <div class="legacy-panel form-section">
+    <form method="post" action="{% url 'create_diagnosis' patient.id %}">
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {% for field in form %}
+            {% if field.errors %}{{ field.errors }}{% endif %}
+          {% endfor %}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endif %}
+
+      {{ form.as_p }}
+
+      <div class="action-row">
+        <button type="submit" class="btn btn-primary">Add Diagnosis</button>
+        <a class="btn btn-secondary" href="{% url 'diagnosis' patient.id %}">Cancel</a>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}
