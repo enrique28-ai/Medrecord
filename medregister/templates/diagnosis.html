@@ -1,46 +1,43 @@
 {% extends 'base.html' %}
 {% load tz %}
+{% block title %}Diagnoses · {{ patient.name }} · MedRecord{% endblock %}
 {% block content %}
-<main class="container">
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-<h1 class="text-center display-3 py-5">{{patient.name}} - Diagnosis</h1>
-<a class="btn btn-primary mb-3" href="{% url 'create_diagnosis' patient.id %}">
- Create Diagnosis
-</a>
+<section>
+  <header class="page-header">
+    <div>
+      <p class="page-eyebrow">Diagnosis records</p>
+      <h1 class="page-title">{{ patient.name }}</h1>
+      <p class="page-subtitle">Diagnosis entries remain scoped to this patient record.</p>
+    </div>
+    <div class="page-header__actions">
+      <a class="btn-medrecord" href="{% url 'create_diagnosis' patient.id %}">Add diagnosis</a>
+      <a class="btn-outline-medrecord" href="{% url 'patient_detail' patient.id %}">Back to patient</a>
+    </div>
+  </header>
 
-<a class="btn btn-secondary mb-3" href="{% url 'patient_detail' patient.id %}">
- Back to Patient
-</a>
-<form method="get"
-            action="{% url 'diagnosis' patient.id %}"
-            class="input-group mb-4">
-        <input type="text"
-               name="q"
-               value="{{ query }}"
-               class="form-control"
-               placeholder="Search diagnosis…">
-        <button class="btn btn-outline-secondary"
-                type="submit">Search</button>
-      </form>
+  <form method="get" action="{% url 'diagnosis' patient.id %}" class="search-panel" role="search">
+    <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search diagnosis or description" aria-label="Search diagnosis records">
+    <button class="btn-outline-medrecord" type="submit">Search</button>
+  </form>
 
-<ul class="list-group">
-{% for rec in health_records %}
-    <a class="list-group-item" href="{% url 'diagnosis_detail' patient.id rec.id %}">
-        <header class="d-flex align-items-center mb-1">
-            <h3 class="fw-bold m-0">{{rec.diagnostic}}</h3>
-            <span class="text-secondary ms-auto">
-                {{ rec.created_at|localtime|date:"d/m/Y H:i" }}
-              </span>
-            <br/><br/>
-        </header>
-        <p>{{rec.description}}</p>
-    </a>
-{% endfor %}
-</ul>
-</div>
-</div>
-</main>
-
-    
+  {% if health_records %}
+    <div class="record-list">
+      {% for rec in health_records %}
+        <a class="record-card" href="{% url 'diagnosis_detail' patient.id rec.id %}">
+          <div class="record-card__header">
+            <h2 class="record-card__title">{{ rec.diagnostic }}</h2>
+            <span class="record-card__meta">{{ rec.created_at|localtime|date:"M j, Y · H:i" }}</span>
+          </div>
+          <p class="record-card__description">{{ rec.description|truncatechars:220 }}</p>
+          <div class="record-card__footer">View diagnosis →</div>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <h2>No diagnosis records found</h2>
+      <p>{% if query %}Try a different search term.{% else %}Add the first diagnosis record for this patient.{% endif %}</p>
+    </div>
+  {% endif %}
+</section>
 {% endblock %}

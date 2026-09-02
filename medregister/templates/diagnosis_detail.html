@@ -1,38 +1,49 @@
 {% extends 'base.html' %}
+{% block title %}Diagnosis · {{ patient.name }} · MedRecord{% endblock %}
 {% block content %}
-<main class="container">
-    <div class="row">
-    <div class="col-md-4 offset-md-4 ">
-<h1 class="text-secondary">Update Diagnosis - {{patient.name}}</h1>
+<section>
+  <header class="page-header">
+    <div>
+      <p class="page-eyebrow">Diagnosis record</p>
+      <h1 class="page-title">{{ health_record.diagnostic }}</h1>
+      <p class="page-subtitle">Review or update this diagnosis entry for {{ patient.name }}.</p>
+    </div>
+    <div class="page-header__actions">
+      <a class="btn-outline-medrecord" href="{% url 'diagnosis' patient.id %}">Back to diagnoses</a>
+    </div>
+  </header>
 
-<div class="mt-5 mb-5">
-<form method="POST" action="{% url 'diagnosis_detail' patient.id health_record.id %}">
-    {% csrf_token %}
-     {% if form.errors %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert"> 
-                {% for field in form %}
-                    {% if field.errors %}
-                        {{ field.errors }}
-                    {% endif %}
-                {% endfor %}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endif %}
-    {{ form.as_p }}
-    <button class="btn btn-success">Update Diagnosis</button>
-</form>
-<form action="{% url 'delete_diagnosis' patient.id health_record.id %}" method="post">
-{% csrf_token %}
-<button class="btn btn-danger">
-    Delete
-</button>
-</form>
-<br/>
-<a class="btn btn-secondary" href="{% url 'diagnosis' patient.id %}">
-    Diagnoses
-</a>
-</div>
-</div>
-</div>
-</main>
+  <div class="detail-grid">
+    <div class="panel-card">
+      <h2>Record information</h2>
+      <form method="post" action="{% url 'diagnosis_detail' patient.id health_record.id %}" class="medrecord-form mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-actions">
+          <button type="submit" class="btn-medrecord">Save changes</button>
+        </div>
+      </form>
+    </div>
+
+    <aside>
+      <div class="panel-card">
+        <span class="context-note">Patient context</span>
+        <h2>{{ patient.name }}</h2>
+        <p class="mt-2">This diagnosis record belongs to the selected patient.</p>
+        <div class="action-stack mt-3">
+          <a class="btn-outline-medrecord" href="{% url 'patient_detail' patient.id %}">View patient</a>
+          <a class="btn-outline-medrecord" href="{% url 'diagnosis' patient.id %}">All diagnoses</a>
+        </div>
+      </div>
+
+      <div class="danger-panel">
+        <p>Deleting this entry removes the diagnosis record from the application.</p>
+        <form action="{% url 'delete_diagnosis' patient.id health_record.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn-danger-soft w-100">Delete diagnosis</button>
+        </form>
+      </div>
+    </aside>
+  </div>
+</section>
 {% endblock %}
