@@ -1,14 +1,41 @@
 {% extends 'base.html' %}
+{% block title %}MedRecord{% endblock %}
+{% block content %}
+<section class="hero-panel">
+  <div class="hero-panel__main">
+    <p class="page-eyebrow">Patient record organization</p>
+    <h1 class="page-title">Structured records, clearer relationships.</h1>
+    <p class="page-subtitle">
+      MedRecord is a Django learning project for organizing account-owned patients and the diagnosis records connected to each patient.
+    </p>
+    <div class="hero-panel__actions">
+      {% if user.is_authenticated %}
+        <a class="btn-medrecord" href="{% url 'patients' %}">View patients</a>
+        <a class="btn-outline-medrecord" href="{% url 'create_patient' %}">Add patient</a>
+      {% else %}
+        <a class="btn-medrecord" href="{% url 'signin' %}">Sign in</a>
+        <a class="btn-outline-medrecord" href="{% url 'signup' %}">Create account</a>
+      {% endif %}
+    </div>
+  </div>
 
-{% block content%}
-<main class="container" py-5>
-<section class="card card-body">
-<h1 class="display-1 text-center">Pacient Medical History</h1>
-<div class="text-center">
-<a class="btn btn-secondary" href="{% url 'signin' %}">
-    Start
-</a>
-</div>
+  <aside class="hero-panel__aside">
+    <p class="page-eyebrow">Project scope</p>
+    <h2>Built around related records</h2>
+    <ul class="feature-list">
+      <li>
+        <strong>Patient records</strong>
+        <span>Each authenticated account works with its own patient entries.</span>
+      </li>
+      <li>
+        <strong>Diagnosis records</strong>
+        <span>Diagnosis entries remain connected to the patient they describe.</span>
+      </li>
+      <li>
+        <strong>Scoped retrieval</strong>
+        <span>Search and record access stay within the current account and patient context.</span>
+      </li>
+    </ul>
+  </aside>
 </section>
-</main>
 {% endblock %}
