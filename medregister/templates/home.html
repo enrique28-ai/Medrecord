@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="home-box">
+  <h1>MedRecord</h1>
+  <p>Organize patients and their diagnosis records in one place.</p>
+  {% if user.is_authenticated %}
+    <a class="btn btn-primary" href="{% url 'patients' %}">View Patients</a>
+  {% else %}
+    <a class="btn btn-primary" href="{% url 'signin' %}">Get Started</a>
+  {% endif %}
+</div>
+{% endblock %}

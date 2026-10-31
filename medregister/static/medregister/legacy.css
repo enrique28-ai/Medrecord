@@ -1,0 +1,100 @@
+body {
+    background-color: #f4f6f8;
+    color: #212529;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.page-shell {
+    max-width: 980px;
+    margin: 36px auto;
+}
+
+.page-title {
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #d6d9dc;
+}
+
+.page-title h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.page-title p {
+    margin: 6px 0 0;
+    color: #6c757d;
+}
+
+.legacy-panel {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background: #ffffff;
+    padding: 22px;
+}
+
+.legacy-panel + .legacy-panel {
+    margin-top: 18px;
+}
+
+.legacy-list .list-group-item {
+    border-color: #d8dde1;
+    color: #212529;
+}
+
+.legacy-list .list-group-item:hover {
+    background-color: #f2f4f6;
+}
+
+.record-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.record-row h2,
+.record-row h3 {
+    margin: 0;
+}
+
+.record-meta {
+    color: #6c757d;
+    white-space: nowrap;
+}
+
+.form-section {
+    max-width: 640px;
+}
+
+.form-section .form-control {
+    margin-bottom: 12px;
+}
+
+.action-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.home-box {
+    max-width: 760px;
+    margin: 70px auto;
+    padding: 48px 36px;
+    border: 1px solid #cfd4d9;
+    border-radius: 4px;
+    background: #ffffff;
+    text-align: center;
+}
+
+.home-box h1 {
+    font-size: 2.6rem;
+    margin-bottom: 12px;
+}
+
+.home-box p {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
